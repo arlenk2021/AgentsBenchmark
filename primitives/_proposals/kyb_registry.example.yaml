@@ -1,0 +1,24 @@
+# Example Stage-0 proposal (the exit artifact for "Qualify the primitive").
+# Score with:  python -m wrodium qualify primitives/_proposals/kyb_registry.example.yaml
+name: kyb_registry
+
+consumer_tasks:
+  - business_verification     # "agent confirms a company is real + active before transacting"
+
+rationale: >
+  Agents completing onboarding, payments, or vendor-due-diligence flows must verify a
+  business against an authoritative registry mid-task. Truth is a government source
+  (Companies House / EDGAR / state SoS), so every answer is script-verifiable. At least
+  four vendors expose KYB APIs publicly, and this reuses the firmographics cohort and
+  ingester we already run — so most of Stage 3 is skipped (a "benchmark 2+" on a shared
+  cohort, ~2 weeks rather than 5).
+
+truth_needs_insiders: false
+
+scores:
+  deterministic_truth: true    # government registries verify every answer
+  agents_are_buyers: true      # KYB appears in agent onboarding/payment tool lists
+  freshness_scoreable: true    # registry filing dates give an objective event clock
+  four_plus_vendors: true      # >= 4 KYB APIs with public access
+  wrodium_leverage: true       # reuses the firmographics cohort + ingester
+# total: 5/5 -> qualifies.
