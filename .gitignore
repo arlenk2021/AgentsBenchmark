@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+dist/
+*.egg-info/
+# Holdout data and raw holdout responses never live in the public repo.
+golden/**/holdout*.jsonl
+snapshots/**/*.raw.holdout.jsonl
+legal/*.pdf
