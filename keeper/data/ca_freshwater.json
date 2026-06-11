@@ -1,0 +1,49 @@
+{
+  "jurisdiction": "CA",
+  "domain": "freshwater_sport_fishing",
+  "source": {
+    "agency": "California Department of Fish and Wildlife (CDFW)",
+    "url": "https://wildlife.ca.gov/Fishing/Inland/Regulations",
+    "verified_on": "2026-06-11",
+    "note": "Statewide defaults; many waters have special regulations that OVERRIDE these. Always check the water-specific listing."
+  },
+  "species": [
+    {
+      "key": "black_bass",
+      "common_names": ["bass", "largemouth bass", "smallmouth bass", "black bass", "spotted bass"],
+      "scientific": "Micropterus spp.",
+      "measure": "total_length_in",
+      "rules": [
+        {
+          "region": "statewide_default",
+          "min_size_in": null,
+          "max_size_in": null,
+          "daily_bag": 5,
+          "season": "open_year_round",
+          "season_note": "Statewide default is 5/day with no minimum size, but MANY lakes have special size/slot limits that override this.",
+          "citation": "14 CCR § 5.00 et seq.",
+          "verified_on": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "key": "trout",
+      "common_names": ["trout", "rainbow trout", "brown trout", "brook trout"],
+      "scientific": "Oncorhynchus / Salmo / Salvelinus spp.",
+      "measure": "total_length_in",
+      "rules": [
+        {
+          "region": "statewide_default_lakes",
+          "min_size_in": null,
+          "max_size_in": null,
+          "daily_bag": 5,
+          "possession": 10,
+          "season": "open_year_round",
+          "season_note": "General default for lakes/reservoirs is 5/day, 10 possession. Rivers/streams frequently have lower limits, closures, and gear restrictions — check the water.",
+          "citation": "14 CCR § 7.00 et seq.",
+          "verified_on": "2026-06-11"
+        }
+      ]
+    }
+  ]
+}

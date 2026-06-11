@@ -1,0 +1,77 @@
+{
+  "jurisdiction": "CA",
+  "domain": "marine_sport_fishing",
+  "source": {
+    "agency": "California Department of Fish and Wildlife (CDFW)",
+    "url": "https://wildlife.ca.gov/Fishing/Ocean/Regulations",
+    "license_note": "Resident annual sport fishing license $64.54 (2025); covers fresh + ocean statewide.",
+    "verified_on": "2026-06-11"
+  },
+  "boundaries": {
+    "point_sur": "Point Sur, Monterey County — the line dividing several northern/southern ocean limits."
+  },
+  "species": [
+    {
+      "key": "california_halibut",
+      "common_names": ["california halibut", "halibut", "cal halibut", "flatty"],
+      "scientific": "Paralichthys californicus",
+      "measure": "total_length_in",
+      "rules": [
+        {
+          "region": "north_of_point_sur",
+          "min_size_in": 22.0,
+          "max_size_in": null,
+          "daily_bag": 2,
+          "season": "open_year_round",
+          "citation": "14 CCR § 28.15; CDFW ocean regs",
+          "verified_on": "2026-06-11"
+        },
+        {
+          "region": "south_of_point_sur",
+          "min_size_in": 22.0,
+          "max_size_in": null,
+          "daily_bag": 5,
+          "season": "open_year_round",
+          "citation": "14 CCR § 28.15; CDFW ocean regs",
+          "verified_on": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "key": "pacific_chinook_salmon",
+      "common_names": ["chinook", "king salmon", "chinook salmon", "king"],
+      "scientific": "Oncorhynchus tshawytscha",
+      "measure": "total_length_in",
+      "rules": [
+        {
+          "region": "statewide_ocean",
+          "min_size_in": 24.0,
+          "max_size_in": null,
+          "daily_bag": 0,
+          "season": "frequently_closed",
+          "season_note": "CA ocean salmon has been CLOSED in recent seasons; openings are set in-season by CDFW/PFMC and change yearly. Treat as closed unless a current opening is confirmed.",
+          "citation": "CDFW ocean salmon regulations (in-season)",
+          "verified_on": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "key": "red_abalone",
+      "common_names": ["abalone", "red abalone"],
+      "scientific": "Haliotis rufescens",
+      "measure": "shell_length_in",
+      "rules": [
+        {
+          "region": "statewide",
+          "min_size_in": 7.0,
+          "max_size_in": null,
+          "daily_bag": 0,
+          "season": "closed",
+          "season_note": "The recreational abalone fishery has been CLOSED statewide since 2018; do not take. Violations carry steep assessments.",
+          "citation": "FGC § 5521; CDFW abalone closure",
+          "verified_on": "2026-06-11"
+        }
+      ]
+    }
+  ]
+}
