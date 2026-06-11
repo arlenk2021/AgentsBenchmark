@@ -1,0 +1,109 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# wrodium-bench primitive: web_extraction
+# This is the canonical template referenced by Stage 2 of the playbook
+# ("copy primitives/web_extraction.yaml"). Every required block is present and
+# annotated. `python -m wrodium validate primitives/web_extraction.yaml` passes.
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: web_extraction
+
+# Stage 0 decision record: name the consumer task(s) FIRST. Metrics serve them.
+consumer_tasks:
+  - page_extraction          # "extract structured fields from a URL an agent was handed"
+
+# What the agent actually asks a vendor to do. capability names match adapters.
+task_shapes:
+  - name: extract
+    capability: extract
+    input: { url: "string" }
+    output: { title: "string", price: "number", in_stock: "boolean", tags: "list" }
+
+golden_sources:
+  - type: pages_we_control
+    terms_url: https://wrodium-bench.example/golden/terms
+    note: "Truth pages are deployed and owned by us; every field is page-verifiable."
+
+cohort:
+  size: 300
+  split: { public: 0.7, holdout: 0.3 }   # holdout file lives in the private repo only
+  # Strata are DIFFICULTY AXES, not topics — each should separate vendors.
+  strata:
+    - key: static_html
+      description: "Server-rendered, fields in initial HTML."
+      separates: "baseline fetch+parse competence"
+      weight: 0.25
+    - key: js_rendered
+      description: "Fields appear only after client-side JS executes."
+      separates: "headless-render capability vs naive fetch"
+      weight: 0.35
+    - key: ambiguous_layout
+      description: "Multiple plausible price/title nodes; needs disambiguation."
+      separates: "selector robustness vs first-match guessing"
+      weight: 0.25
+    - key: paginated_or_lazy
+      description: "Content behind lazy-load / infinite scroll."
+      separates: "interaction depth"
+      weight: 0.15
+
+regions: [us, eu, apac]
+
+# Stage 1 ToS gate: every vendor row carries a verdict + pinned plan + cost table.
+vendors:
+  - key: alpha_extract
+    tos_status: cleared
+    plan: "developer ($49/mo)"
+    pricing_archived: "legal/alpha_extract-pricing-2026-06-01.pdf"
+    capabilities: [extract]
+    cost_table: { extract: 0.0012 }       # billed $ per extract call, from the archived PDF
+  - key: beta_scrape
+    tos_status: cleared
+    plan: "starter ($29/mo)"
+    pricing_archived: "legal/beta_scrape-pricing-2026-06-01.pdf"
+    capabilities: [extract]
+    cost_table: { extract: 0.0008 }
+  - key: gamma_render
+    tos_status: cleared
+    plan: "pro ($99/mo)"
+    pricing_archived: "legal/gamma_render-pricing-2026-06-01.pdf"
+    capabilities: [extract]
+    cost_table: { extract: 0.0025 }
+  - key: delta_parse
+    tos_status: static_rubric_only
+    plan: "free tier"
+    pricing_archived: "legal/delta_parse-pricing-2026-06-01.pdf"
+    capabilities: [extract]
+    cost_table: { extract: 0.0 }
+  - key: epsilon_ai
+    tos_status: excluded
+    exclusion_reason: "ToS forbids publishing comparative benchmark results."
+
+scoring:
+  method: deterministic
+  capability: extract
+  golden_fields: [title, price, in_stock, tags]
+  match_rules:
+    title:    { matcher: normalized_string }
+    price:    { matcher: numeric_tolerance, tol: 0.0 }
+    in_stock: { matcher: exact }
+    tags:     { matcher: set_overlap, threshold: 1.0 }
+  result_states: [correct, incorrect, no_coverage, blocked, timeout, fetch_failed]
+
+# Every metric decides its '-' (no coverage) semantics. cost_per_correct is mandatory.
+metrics:
+  - key: accuracy
+    direction: higher_better
+    dash_semantics: "vendor made no scoreable attempt on any item (all blocked/empty)"
+    description: "correct / (correct + incorrect)"
+  - key: coverage
+    direction: higher_better
+    dash_semantics: "no rows attempted"
+    description: "scoreable attempts / cohort rows"
+  - key: cost_per_correct
+    direction: lower_better
+    unit: usd
+    dash_semantics: "zero correct answers — cost-per-correct is undefined, not infinite"
+    description: "total billed cost / correct answers"
+  - key: overfit_gap
+    direction: lower_better
+    dash_semantics: "either split had no scoreable attempts"
+    description: "public accuracy minus holdout accuracy"
